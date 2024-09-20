@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import FileUploader from './components/FileUploader';
+import TextProcessor from './components/TextProcessor';
+import SoundDownload from './components/SoundDownload';
 
 function App() {
+  const [file, setFile] = useState(null);
+  const [soundLinks, setSoundLinks] = useState([]);
+
+  const handleFileUpload = (uploadedFile) => {
+    setFile(uploadedFile);
+  };
+
+  const handleSoundGenerated = (links) => {
+    setSoundLinks(links);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Image to SoundFX Generator</h1>
+      <FileUploader onUpload={handleFileUpload} />
+      {file && <TextProcessor file={file} onSoundGenerated={handleSoundGenerated} />}
+      {soundLinks.length > 0 && <SoundDownload soundLinks={soundLinks} />}
     </div>
   );
 }
