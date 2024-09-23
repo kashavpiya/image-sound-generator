@@ -25,7 +25,7 @@ const TextProcessor = ({ file }) => {
         },
         {
           params: {
-            key: 'AIzaSyCZXSnVbrEdI6KX1qnMzZAobU1hFTHCDew',
+            key: '####',
           },
         }
       );
@@ -45,7 +45,7 @@ const TextProcessor = ({ file }) => {
   };
 
   const generateSoundEffects = async (descriptions) => {
-    const apiKey = '1ZUSDUN07HKWM72TUMEYTGZKD11XP59G8MUYVQ7G';
+    const apiKey = '####';
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
@@ -69,7 +69,7 @@ const TextProcessor = ({ file }) => {
   };
 
   const pollForSound = async (jobId) => {
-    const apiKey = '1ZUSDUN07HKWM72TUMEYTGZKD11XP59G8MUYVQ7G';
+    const apiKey = '###;
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
