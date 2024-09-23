@@ -69,7 +69,7 @@ const TextProcessor = ({ file }) => {
   };
 
   const pollForSound = async (jobId) => {
-    const apiKey = '###;
+    const apiKey = '###';
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
