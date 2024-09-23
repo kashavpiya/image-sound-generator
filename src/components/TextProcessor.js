@@ -1,48 +1,47 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import SoundDownload from './SoundDownload'; // Assuming you have the SoundDownload component
+import './TextProcessor.css'; // Import your CSS file
 
-const TextProcessor = ({ file, onSoundGenerated }) => {
-  const [extractedText, setExtractedText] = useState('');
+const TextProcessor = ({ file }) => {
+  const [description, setDescription] = useState('');
+  const [soundLinks, setSoundLinks] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const processFile = async () => {
     try {
       setLoading(true);
-  
-      // Convert image to base64
       const fileBase64 = await fileToBase64(file);
-  
+
       const visionResponse = await axios.post(
-        `https://vision.googleapis.com/v1/images:annotate?key=62d8923f10aecc087175c2cdbdca9ba97cf1846d`,
+        'https://vision.googleapis.com/v1/images:annotate',
         {
           requests: [
             {
               image: { content: fileBase64 },
-              features: [{ type: 'TEXT_DETECTION' }],
-            }, 
+              features: [{ type: 'LABEL_DETECTION', maxResults: 5 }],
+            },
           ],
+        },
+        {
+          params: {
+            key: 'AIzaSyCZXSnVbrEdI6KX1qnMzZAobU1hFTHCDew',
+          },
         }
       );
-  
-      const text = visionResponse.data.responses[0].fullTextAnnotation?.text || '';
-      const cleanedText = cleanExtractedText(text);
-      setExtractedText(cleanedText);
-  
-      // 2. Send cleaned text to OptimizerAI API for sound generation
-      const soundLinks = await generateSoundEffects([cleanedText]);
-      onSoundGenerated(soundLinks);
-  
+
+      const labels = visionResponse.data.responses[0].labelAnnotations || [];
+      const description = labels.map((label) => label.description).join(', ');
+      setDescription(description);
+
+      const soundLinks = await generateSoundEffects([description]);
+      setSoundLinks(soundLinks);
+
       setLoading(false);
     } catch (error) {
       console.error("Error processing file:", error.response?.data || error.message);
       setLoading(false);
     }
-  };
-
-  const cleanExtractedText = (text) => {
-    // Clean up the extracted text to match OptimizerAI requirements
-    const words = text.split(' ').slice(0, 8); // Take only first 8 words
-    return words.join(' ').trim();
   };
 
   const generateSoundEffects = async (descriptions) => {
@@ -55,11 +54,10 @@ const TextProcessor = ({ file, onSoundGenerated }) => {
     const payload = {
       input: {
         descriptions: descriptions,
-        duration: 3, // Set sound duration (default is 3 seconds)
+        duration: 3,
       },
     };
 
-    // Make API call to OptimizerAI to get job_id
     const runResponse = await axios.post(
       'https://api.runpod.ai/v2/ex2da8soib595h/run',
       payload,
@@ -67,9 +65,7 @@ const TextProcessor = ({ file, onSoundGenerated }) => {
     );
     const jobId = runResponse.data.id;
 
-    // Poll the status until the job is completed
-    const soundLinks = await pollForSound(jobId);
-    return soundLinks;
+    return await pollForSound(jobId);
   };
 
   const pollForSound = async (jobId) => {
@@ -90,8 +86,7 @@ const TextProcessor = ({ file, onSoundGenerated }) => {
         return audioDownloadUrls;
       }
 
-      // Add delay between status checks
-      await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait 5s before retrying
+      await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   };
 
@@ -100,7 +95,6 @@ const TextProcessor = ({ file, onSoundGenerated }) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        // This removes the prefix (data:image/jpeg;base64,...) and extracts only the base64-encoded string
         const base64String = reader.result.split(',')[1];
         resolve(base64String);
       };
@@ -109,13 +103,14 @@ const TextProcessor = ({ file, onSoundGenerated }) => {
   };
 
   return (
-    <div>
+    <div className="text-processor">
       {loading ? (
         <p>Processing... please wait.</p>
       ) : (
-        <button onClick={processFile}>Extract Text and Generate Sound</button>
+        <button onClick={processFile} className="process-button">Describe Image and Generate Sound</button>
       )}
-      <div>Extracted Text: {extractedText}</div>
+      {description && <div className="description">Description: {description}</div>}
+      {soundLinks.length > 0 && <SoundDownload soundLinks={soundLinks} />}
     </div>
   );
 };

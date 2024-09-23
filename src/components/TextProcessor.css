@@ -1,0 +1,28 @@
+.text-processor {
+    margin: 20px 0;
+    background-color: #1e1e1e;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+  }
+  
+  .process-button {
+    background-color: #00bcd4;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .process-button:hover {
+    background-color: #008c9e;
+  }
+  
+  .description {
+    margin-top: 10px;
+    color: #b3b3b3;
+  }
+  
