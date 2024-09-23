@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FileUploader from './components/FileUploader';
 import TextProcessor from './components/TextProcessor';
 import SoundDownload from './components/SoundDownload';
-import './App.css'; // Import your CSS file
+import './App.css'; 
 
 function App() {
   const [file, setFile] = useState(null);

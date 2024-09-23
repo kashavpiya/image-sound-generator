@@ -1,5 +1,5 @@
 import React from 'react';
-import './SoundDownload.css'; // Assuming you already have this CSS file
+import './SoundDownload.css'; 
 
 const SoundDownload = ({ soundLinks }) => {
   return (

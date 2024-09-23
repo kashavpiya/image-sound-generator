@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import SoundDownload from './SoundDownload'; // Assuming you have the SoundDownload component
-import './TextProcessor.css'; // Import your CSS file
+import SoundDownload from './SoundDownload'; 
+import './TextProcessor.css'; 
 
 const TextProcessor = ({ file }) => {
   const [description, setDescription] = useState('');
@@ -25,7 +25,7 @@ const TextProcessor = ({ file }) => {
         },
         {
           params: {
-            key: '####',
+            key: '######', //insert google vision api key here instead of ######
           },
         }
       );
@@ -45,7 +45,8 @@ const TextProcessor = ({ file }) => {
   };
 
   const generateSoundEffects = async (descriptions) => {
-    const apiKey = '####';
+    // Insert Optimizer api key here instead of ######
+    const apiKey = '######';
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
@@ -69,7 +70,8 @@ const TextProcessor = ({ file }) => {
   };
 
   const pollForSound = async (jobId) => {
-    const apiKey = '###';
+    // Insert Optimizer api key here instead of ######
+    const apiKey = '######';
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
