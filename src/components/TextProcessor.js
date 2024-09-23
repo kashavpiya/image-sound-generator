@@ -12,7 +12,6 @@ const TextProcessor = ({ file, onSoundGenerated }) => {
       // Convert image to base64
       const fileBase64 = await fileToBase64(file);
   
-      // 1. Send image to Google Vision API for text extraction
       const visionResponse = await axios.post(
         `https://vision.googleapis.com/v1/images:annotate?key=62d8923f10aecc087175c2cdbdca9ba97cf1846d`,
         {
